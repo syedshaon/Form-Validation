@@ -1,4 +1,8 @@
-# Regular Expression in JS
+Form Validation site done as told on [The Odin Projec' assignment](https://www.theodinproject.com/lessons/node-path-javascript-form-validation-with-javascript)
+
+# [Live Site can be Found Here](https://syedshaon.github.io/Form-Validation/)
+
+## Regular Expression in JS
 
 ```
 
