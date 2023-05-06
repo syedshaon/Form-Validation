@@ -2,6 +2,7 @@ Form Validation site done as told on [The Odin Projec' assignment](https://www.t
 
 # [Live Site can be Found Here](https://syedshaon.github.io/Form-Validation/)
 
+## Main branch uses Regular expression to validate while other branch uses constraint validation 
 ## Regular Expression in JS
 
 ```
