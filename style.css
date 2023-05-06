@@ -3,3 +3,8 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+#matchError1,
+#matchError2 {
+  display: none;
+}

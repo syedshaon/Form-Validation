@@ -1,78 +1,190 @@
-let re;
-re = /hello/;
-re = /hello/i; // i = case insensitive
-// re = /hello/g; // Global search
+const Name = document.getElementById("name");
+const Email = document.getElementById("email");
+const Zip = document.getElementById("zip");
+const Phone = document.getElementById("phone");
+const Pass = document.getElementById("password");
+const RePass = document.getElementById("re-password");
 
-// const result = re.exec("ll hellolll World");
-// exec returns array with info
+Name.addEventListener("blur", validateName);
+Email.addEventListener("blur", validateEmail);
+Zip.addEventListener("blur", validateZip);
+Phone.addEventListener("blur", validatePhone);
+Pass.addEventListener("blur", validatePass);
+RePass.addEventListener("blur", validatePass);
 
-// const result = re.test("ll Hellolll World");
-// test is for exact match. return boolean
+document.getElementById("submit").addEventListener("click", (e) => {
+  e.preventDefault();
+  // console.log(validateName());
+  // console.log(validateEmail());
+  // console.log(validateZip());
+  // console.log(validatePhone());
+  // console.log(validatePass());
 
-// const result = str.match(re);
-// match is similar to exec
-
-// const result = str.search(re);
-// search returns index of the first match. If no match is found, it returns -1
-
-// const result = str.replace(re, "hi");
-// replaces search term and returns new text
-
-// Metacharacter Symbols
-
-re = /^h/i; // Must start with
-re = /world$/i; // Must ends with
-re = /^world$/i; // Must start and ends with
-re = /w.rld/i; // Dot(.) works as ONE wild card
-re = /w*rld/i; // Star(*) works as any number of wild card
-re = /gre?a?y/i; // e and i is optional
-re = /gre?a?y\?/i; // e and i is optional
-
-// Brackets [] -Character Sets
-re = /gr[ae]y/i; // Must be a or e
-re = /[^gf]ray/i; // Must be anything except g and r
-re = /^[gf]ray/i; // Must start with  g or r
-re = /[A-Z]ray/; // Matches uppercase letters
-re = /[a-z]ray/; // Matches lowercase letters
-re = /[A-Za-z]ray/; // Matches uppercase & lowercase letters
-re = /[0-9]/; // Matches numbers
-re = /[0-9][0-9]/; // Matches numbers
-
-// Braces {} - Quantifiers
-
-re = /Hel{2}o/i; // "l" must occur 2 number of times
-re = /Hel{2,4}o/i; // "l" must occur 2 to 4 number of times
-re = /Hel{2,}o/i; // "l" must occur at least 2 times
-
-//  Parenthesis () - Grouping
-
-re = /([0-9]x){3}/; // 0 to 9 and x should occer 3X times. Prenthesis is for grouping
-
-// Shorthand Character classes
-re = /\w/; // Word Character. Matcheds any leters, numbers and underscore
-re = /\w+/; // Word Character. Matcheds any leters, numbers and underscore. PLUS means once or more
-re = /\W/; // Non word characters
-re = /\d/; // match any digit
-re = /\d+/; // match any digit, ONE or more times
-re = /\D/; // match anything other than digit
-re = /\s/; // match white-space character
-re = /\S/; // match NON-white-space character
-re = /Hell\b/i; // Word boundary. Will only match Hell not Hello
-re = /x(?=y)/; // Matches x followed by y
-re = /x(?!y)/; // Matches x if not followed by y
-
-// String to match
-const str = "Hello welcome to Hell xx";
-
-const result = re.exec(str);
-console.log(result);
-
-function reTest(re, str) {
-  if (re.test(str)) {
-    console.log(`${str} matches ${re.source}`);
+  if (validateName() && validateEmail() && validateZip() && validatePhone() && validatePass()) {
+    document.getElementById("form").innerHTML = `<h1>Your inputs are valid. Thanks for your submission!</h1>`;
   } else {
-    console.log(`${str} doesn't match ${re.source}`);
+    alert("Your inputs are invalid. Please submit again with correct info.");
+  }
+});
+
+function validateName() {
+  const value = Name.value;
+  const re = /^[a-zA-Z\s]{2,20}$/;
+  if (!re.test(value)) {
+    if (!Name.classList.contains("is-invalid")) {
+      Name.classList.add("is-invalid");
+    }
+    if (Name.classList.contains("is-valid")) {
+      Name.classList.remove("is-valid");
+    }
+
+    return false;
+  } else {
+    if (Name.classList.contains("is-invalid")) {
+      Name.classList.remove("is-invalid");
+    }
+    if (!Name.classList.contains("is-valid")) {
+      Name.classList.add("is-valid");
+    }
+    return true;
   }
 }
 
-reTest(re, str);
+function validateEmail() {
+  const value = Email.value;
+  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if (!re.test(value)) {
+    if (!Email.classList.contains("is-invalid")) {
+      Email.classList.add("is-invalid");
+    }
+    if (Email.classList.contains("is-valid")) {
+      Email.classList.remove("is-valid");
+    }
+    return false;
+  } else {
+    if (Email.classList.contains("is-invalid")) {
+      Email.classList.remove("is-invalid");
+    }
+    if (!Email.classList.contains("is-valid")) {
+      Email.classList.add("is-valid");
+    }
+
+    return true;
+  }
+}
+function validateZip() {
+  const value = Zip.value;
+  const re = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+  if (!re.test(value)) {
+    if (!Zip.classList.contains("is-invalid")) {
+      Zip.classList.add("is-invalid");
+    }
+    if (Zip.classList.contains("is-valid")) {
+      Zip.classList.remove("is-valid");
+    }
+    return false;
+  } else {
+    if (Zip.classList.contains("is-invalid")) {
+      Zip.classList.remove("is-invalid");
+    }
+    if (!Zip.classList.contains("is-valid")) {
+      Zip.classList.add("is-valid");
+    }
+    return true;
+  }
+}
+function validatePhone() {
+  const value = Phone.value;
+  const re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  if (!re.test(value)) {
+    if (!Phone.classList.contains("is-invalid")) {
+      Phone.classList.add("is-invalid");
+    }
+    if (Phone.classList.contains("is-valid")) {
+      Phone.classList.remove("is-valid");
+    }
+
+    return false;
+  } else {
+    if (Phone.classList.contains("is-invalid")) {
+      Phone.classList.remove("is-invalid");
+    }
+    if (!Phone.classList.contains("is-valid")) {
+      Phone.classList.add("is-valid");
+    }
+    return true;
+  }
+}
+let pass1 = "";
+let pass2 = "";
+
+function validatePass() {
+  const pass1 = Pass.value;
+  const pass2 = RePass.value;
+
+  const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+  if (!re.test(pass1)) {
+    Pass.classList.add("is-invalid");
+  } else {
+    if (Pass.classList.contains("is-invalid")) {
+      Pass.classList.remove("is-invalid");
+    }
+  }
+
+  if (!re.test(pass2)) {
+    RePass.classList.add("is-invalid");
+  } else {
+    if (RePass.classList.contains("is-invalid")) {
+      RePass.classList.remove("is-invalid");
+    }
+  }
+
+  if (pass1 === pass2) {
+    // console.log(`matches ${pass1} , ${pass2}`);
+    document.getElementById("matchError1").style.display = "none";
+    document.getElementById("matchError2").style.display = "none";
+  } else {
+    // console.log(`doesn't matche ${pass1} , ${pass2}`);
+    document.getElementById("matchError1").style.display = "block";
+    document.getElementById("matchError2").style.display = "block";
+  }
+
+  if (re.test(pass1) && re.test(pass2) && pass1 === pass2) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/*
+function validateRePass(e) {
+  const pass2 = e.target.value;
+   
+  if (!re.test(pass2)) {
+    if(!this.classList.contains("is-invalid")){
+      this.classList.add("is-invalid");
+    }
+    if(this.classList.contains("is-valid")){
+      this.classList.remove("is-valid");
+    }
+  } else {
+    if (this.classList.contains("is-invalid")) {
+      this.classList.remove("is-invalid");
+    }
+    if(!this.classList.contains("is-valid")){
+      this.classList.add("is-valid");
+    }
+  }
+  if (pass1 === pass2) {
+    console.log(`matches ${pass1} , ${pass2}`);
+    document.getElementById("matchError1").style.display = "none";
+    document.getElementById("matchError2").style.display = "none";
+  } else {
+    console.log(`doesn't matche ${pass1} , ${pass2}`);
+    document.getElementById("matchError1").style.display = "block";
+    document.getElementById("matchError2").style.display = "block";
+  }
+}
+
+*/

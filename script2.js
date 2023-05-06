@@ -1,7 +1,3 @@
-# Regular Expression in JS
-
-```
-
 let re;
 re = /hello/;
 re = /hello/i; // i = case insensitive
@@ -80,6 +76,3 @@ function reTest(re, str) {
 }
 
 reTest(re, str);
-
-
-```
