@@ -1,190 +1,300 @@
+const form = document.getElementById("form");
 const Name = document.getElementById("name");
-const Email = document.getElementById("email");
+const NameError = document.querySelector("#name + small.invalid-feedback");
+const email = document.getElementById("email");
+const emailError = document.querySelector("#email + small.invalid-feedback");
 const Zip = document.getElementById("zip");
+const ZipError = document.querySelector("#zip + small.invalid-feedback");
 const Phone = document.getElementById("phone");
+const PhoneError = document.querySelector("#phone + small.invalid-feedback");
 const Pass = document.getElementById("password");
+const PassError = document.querySelector("#password + small.invalid-feedback");
 const RePass = document.getElementById("re-password");
+const RePassError = document.querySelector("#re-password + small.invalid-feedback");
 
-Name.addEventListener("blur", validateName);
-Email.addEventListener("blur", validateEmail);
-Zip.addEventListener("blur", validateZip);
-Phone.addEventListener("blur", validatePhone);
-Pass.addEventListener("blur", validatePass);
-RePass.addEventListener("blur", validatePass);
+// Name.addEventListener("blur", validateName);
+// Email.addEventListener("blur", validateEmail);
+// Zip.addEventListener("blur", validateZip);
+// Phone.addEventListener("blur", validatePhone);
+// Pass.addEventListener("blur", validatePass);
+// RePass.addEventListener("blur", validatePass);
 
-document.getElementById("submit").addEventListener("click", (e) => {
-  e.preventDefault();
-  // console.log(validateName());
-  // console.log(validateEmail());
-  // console.log(validateZip());
-  // console.log(validatePhone());
-  // console.log(validatePass());
+email.addEventListener("input", function (event) {
+  // Each time the user types something, we check if the
+  // form fields are valid.
 
-  if (validateName() && validateEmail() && validateZip() && validatePhone() && validatePass()) {
-    document.getElementById("form").innerHTML = `<h1>Your inputs are valid. Thanks for your submission!</h1>`;
+  if (email.validity.valid) {
+    // In case there is an error message visible, if the field
+    // is valid, we remove the error message.
+    emailError.innerHTML = ""; // Reset the content of the message
+    emailError.className = "error"; // Reset the visual state of the message
   } else {
-    alert("Your inputs are invalid. Please submit again with correct info.");
+    // If there is still an error, show the correct error
+    showEmailError();
   }
 });
 
-function validateName() {
-  const value = Name.value;
-  const re = /^[a-zA-Z\s]{2,20}$/;
-  if (!re.test(value)) {
-    if (!Name.classList.contains("is-invalid")) {
-      Name.classList.add("is-invalid");
-    }
-    if (Name.classList.contains("is-valid")) {
-      Name.classList.remove("is-valid");
-    }
-
-    return false;
-  } else {
-    if (Name.classList.contains("is-invalid")) {
-      Name.classList.remove("is-invalid");
-    }
-    if (!Name.classList.contains("is-valid")) {
-      Name.classList.add("is-valid");
-    }
-    return true;
+function showEmailError() {
+  if (email.validity.valueMissing) {
+    // If the field is empty
+    // display the following error message.
+    emailError.textContent = "You need to enter an e-mail address.";
+  } else if (email.validity.typeMismatch) {
+    // If the field doesn't contain an email address
+    // display the following error message.
+    emailError.textContent = "Entered value needs to be an e-mail address.";
+  } else if (email.validity.tooShort) {
+    // If the data is too short
+    // display the following error message.
+    emailError.textContent = `Email should be at least ${email.minLength} characters; you entered ${email.value.length}.`;
   }
+
+  // Set the styling appropriately
+  emailError.className = "error active form-text invalid-feedback";
 }
 
-function validateEmail() {
-  const value = Email.value;
-  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  if (!re.test(value)) {
-    if (!Email.classList.contains("is-invalid")) {
-      Email.classList.add("is-invalid");
-    }
-    if (Email.classList.contains("is-valid")) {
-      Email.classList.remove("is-valid");
-    }
-    return false;
-  } else {
-    if (Email.classList.contains("is-invalid")) {
-      Email.classList.remove("is-invalid");
-    }
-    if (!Email.classList.contains("is-valid")) {
-      Email.classList.add("is-valid");
-    }
+/* //////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////// */
 
-    return true;
+Name.addEventListener("input", function (event) {
+  // Each time the user types something, we check if the
+  // form fields are valid.
+
+  if (Name.validity.valid) {
+    // In case there is an error message visible, if the field
+    // is valid, we remove the error message.
+    NameError.innerHTML = ""; // Reset the content of the message
+    NameError.className = "error"; // Reset the visual state of the message
+  } else {
+    // If there is still an error, show the correct error
+    showDateError();
   }
-}
-function validateZip() {
-  const value = Zip.value;
-  const re = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
-  if (!re.test(value)) {
-    if (!Zip.classList.contains("is-invalid")) {
-      Zip.classList.add("is-invalid");
-    }
-    if (Zip.classList.contains("is-valid")) {
-      Zip.classList.remove("is-valid");
-    }
-    return false;
-  } else {
-    if (Zip.classList.contains("is-invalid")) {
-      Zip.classList.remove("is-invalid");
-    }
-    if (!Zip.classList.contains("is-valid")) {
-      Zip.classList.add("is-valid");
-    }
-    return true;
-  }
-}
-function validatePhone() {
-  const value = Phone.value;
-  const re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  if (!re.test(value)) {
-    if (!Phone.classList.contains("is-invalid")) {
-      Phone.classList.add("is-invalid");
-    }
-    if (Phone.classList.contains("is-valid")) {
-      Phone.classList.remove("is-valid");
-    }
+});
 
-    return false;
-  } else {
-    if (Phone.classList.contains("is-invalid")) {
-      Phone.classList.remove("is-invalid");
-    }
-    if (!Phone.classList.contains("is-valid")) {
-      Phone.classList.add("is-valid");
-    }
-    return true;
-  }
-}
-let pass1 = "";
-let pass2 = "";
-
-function validatePass() {
-  const pass1 = Pass.value;
-  const pass2 = RePass.value;
-
-  const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-
-  if (!re.test(pass1)) {
-    Pass.classList.add("is-invalid");
-  } else {
-    if (Pass.classList.contains("is-invalid")) {
-      Pass.classList.remove("is-invalid");
-    }
+function showDateError() {
+  if (Name.validity.valueMissing) {
+    // If the field is empty
+    // display the following error message.
+    NameError.textContent = "You need to enter your full name.";
+  } else if (Name.validity.typeMismatch) {
+    // If the field doesn't contain an Name address
+    // display the following error message.
+    NameError.textContent = "Entered value needs to be text only.";
+  } else if (Name.validity.tooShort) {
+    // If the data is too short
+    // display the following error message.
+    NameError.textContent = `Name should be at least ${Name.minLength} characters; you entered ${Name.value.length}.`;
   }
 
-  if (!re.test(pass2)) {
-    RePass.classList.add("is-invalid");
-  } else {
-    if (RePass.classList.contains("is-invalid")) {
-      RePass.classList.remove("is-invalid");
-    }
-  }
-
-  if (pass1 === pass2) {
-    // console.log(`matches ${pass1} , ${pass2}`);
-    document.getElementById("matchError1").style.display = "none";
-    document.getElementById("matchError2").style.display = "none";
-  } else {
-    // console.log(`doesn't matche ${pass1} , ${pass2}`);
-    document.getElementById("matchError1").style.display = "block";
-    document.getElementById("matchError2").style.display = "block";
-  }
-
-  if (re.test(pass1) && re.test(pass2) && pass1 === pass2) {
-    return true;
-  } else {
-    return false;
-  }
+  // Set the styling appropriately
+  NameError.className = "error active form-text invalid-feedback";
 }
 
-/*
-function validateRePass(e) {
-  const pass2 = e.target.value;
-   
-  if (!re.test(pass2)) {
-    if(!this.classList.contains("is-invalid")){
-      this.classList.add("is-invalid");
-    }
-    if(this.classList.contains("is-valid")){
-      this.classList.remove("is-valid");
-    }
+/* //////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////// */
+
+Zip.addEventListener("input", function (event) {
+  // Each time the user types something, we check if the
+  // form fields are valid.
+
+  if (Zip.validity.valid) {
+    // In case there is an error message visible, if the field
+    // is valid, we remove the error message.
+    ZipError.innerHTML = ""; // Reset the content of the message
+    ZipError.className = "error"; // Reset the visual state of the message
   } else {
-    if (this.classList.contains("is-invalid")) {
-      this.classList.remove("is-invalid");
-    }
-    if(!this.classList.contains("is-valid")){
-      this.classList.add("is-valid");
-    }
+    // If there is still an error, show the correct error
+    showZipError();
   }
-  if (pass1 === pass2) {
-    console.log(`matches ${pass1} , ${pass2}`);
-    document.getElementById("matchError1").style.display = "none";
-    document.getElementById("matchError2").style.display = "none";
-  } else {
-    console.log(`doesn't matche ${pass1} , ${pass2}`);
-    document.getElementById("matchError1").style.display = "block";
-    document.getElementById("matchError2").style.display = "block";
+});
+
+function showZipError() {
+  if (Zip.validity.valueMissing) {
+    // If the field is empty
+    // display the following error message.
+    ZipError.textContent = "You need to enter your Zip Code.";
+  } else if (Zip.validity.typeMismatch) {
+    // If the field doesn't contain an Zip address
+    // display the following error message.
+    ZipError.textContent = "Entered value needs to be text or number only.";
+  } else if (Zip.validity.tooShort) {
+    // If the data is too short
+    // display the following error message.
+    ZipError.textContent = `Zip code should be at least ${Zip.minLength} characters; you entered ${Zip.value.length}.`;
   }
+
+  // Set the styling appropriately
+  ZipError.className = "error active form-text invalid-feedback";
 }
 
-*/
+/* //////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////// */
+
+Phone.addEventListener("input", function (event) {
+  // Each time the user types something, we check if the
+  // form fields are valid.
+
+  if (Phone.validity.valid) {
+    // In case there is an error message visible, if the field
+    // is valid, we remove the error message.
+    PhoneError.innerHTML = ""; // Reset the content of the message
+    PhoneError.className = "error"; // Reset the visual state of the message
+  } else {
+    // If there is still an error, show the correct error
+    showPhoneError();
+  }
+});
+
+function showPhoneError() {
+  if (Phone.validity.valueMissing) {
+    // If the field is empty
+    // display the following error message.
+    PhoneError.textContent = "You need to enter your Phone Number.";
+  } else if (Phone.validity.typeMismatch) {
+    // If the field doesn't contain an Phone address
+    // display the following error message.
+    PhoneError.textContent = "Entered value needs to be a valid phone number.";
+  } else if (Phone.validity.tooShort) {
+    // If the data is too short
+    // display the following error message.
+    PhoneError.textContent = `Phone code should be at least ${Phone.minLength} characters; you entered ${Phone.value.length}.`;
+  }
+
+  // Set the styling appropriately
+  PhoneError.className = "error active form-text invalid-feedback";
+}
+
+/* //////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////// */
+
+Pass.addEventListener("input", function (event) {
+  // Each time the user types something, we check if the
+  // form fields are valid.
+
+  if (Pass.validity.valid) {
+    // In case there is an error message visible, if the field
+    // is valid, we remove the error message.
+    PassError.innerHTML = ""; // Reset the content of the message
+    PassError.className = "error"; // Reset the visual state of the message
+  } else {
+    // If there is still an error, show the correct error
+    showPassError();
+  }
+});
+
+function showPassError() {
+  if (Pass.validity.valueMissing) {
+    // If the field is empty
+    // display the following error message.
+    PassError.textContent = "You need to enter a strong password.";
+  } else if (Pass.validity.typeMismatch) {
+    // If the field doesn't contain an Pass address
+    // display the following error message.
+    PassError.textContent = "Paaword must be 8 character long, with at least a symbol, upper and lower case letters and a number.";
+  } else if (Pass.validity.tooShort) {
+    // If the data is too short
+    // display the following error message.
+    PassError.textContent = `Pass code should be at least ${Pass.minLength} characters; you entered ${Pass.value.length}.`;
+  }
+
+  // Set the styling appropriately
+  PassError.className = "error active form-text invalid-feedback";
+}
+
+/* //////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////// */
+
+RePass.addEventListener("input", function (event) {
+  // Each time the user types something, we check if the
+  // form fields are valid.
+
+  if (RePass.validity.valid) {
+    // In case there is an error message visible, if the field
+    // is valid, we remove the error message.
+    RePassError.innerHTML = ""; // Reset the content of the message
+    RePassError.className = "error"; // Reset the visual state of the message
+  } else {
+    // If there is still an error, show the correct error
+    showRePassError();
+  }
+});
+
+function showRePassError() {
+  if (RePass.validity.valueMissing) {
+    // If the field is empty
+    // display the following error message.
+    RePassError.textContent = "You need to enter a strong password.";
+  } else if (RePass.validity.typeMismatch) {
+    // If the field doesn't contain an RePass address
+    // display the following error message.
+    RePassError.textContent = "Password must be 8 character long, with at least a symbol, upper and lower case letters and a number.";
+  } else if (RePass.validity.tooShort) {
+    // If the data is too short
+    // display the following error message.
+    RePassError.textContent = `Password  should be at least ${RePass.minLength} characters; you entered ${RePass.value.length}.`;
+  }
+
+  // Set the styling appropriately
+  RePassError.className = "error active form-text invalid-feedback";
+}
+
+/* //////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////// */
+
+form.addEventListener("submit", function (event) {
+  // if the form contains valid data, we let it submit
+
+  if (!Pass.validity.valid) {
+    // If it isn't, we display an appropriate error message
+    showPassError();
+    // Then we prevent the form from being sent by canceling the event
+    event.preventDefault();
+  }
+
+  if (!RePass.validity.valid) {
+    // If it isn't, we display an appropriate error message
+    showRePassError();
+    // Then we prevent the form from being sent by canceling the event
+    event.preventDefault();
+  }
+
+  if (!email.validity.valid) {
+    // If it isn't, we display an appropriate error message
+    showEmailError();
+    // Then we prevent the form from being sent by canceling the event
+    event.preventDefault();
+  }
+
+  if (!Name.validity.valid) {
+    // If it isn't, we display an appropriate error message
+    showDateError();
+    // Then we prevent the form from being sent by canceling the event
+    event.preventDefault();
+  }
+
+  if (!Zip.validity.valid) {
+    // If it isn't, we display an appropriate error message
+    showZipError();
+    // Then we prevent the form from being sent by canceling the event
+    event.preventDefault();
+  }
+
+  if (!Phone.validity.valid) {
+    // If it isn't, we display an appropriate error message
+    showPhoneError();
+    // Then we prevent the form from being sent by canceling the event
+    event.preventDefault();
+  }
+
+  if (RePass.validity.valid && RePass.validity.valid && email.validity.valid && Name.validity.valid && Zip.validity.valid && Phone.validity.valid) {
+    event.preventDefault();
+
+    form.innerHTML = "<h2>Thanks for submitting your details.</h2>";
+  }
+});
